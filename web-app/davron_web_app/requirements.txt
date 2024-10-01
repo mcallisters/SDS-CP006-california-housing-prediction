@@ -1,3 +1,2 @@
-scikit_learn
+scikit-learn
 streamlit
-pickle
