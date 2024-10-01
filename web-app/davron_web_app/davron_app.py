@@ -4,7 +4,7 @@ import datetime
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 
-model_file_path = 'davron_model'
+model_file_path = 'web-app/davron_web_app/davron_model'
 county_encoder_file_path = 'web-app/davron_web_app/davron_county_encoder'
 
 with open(county_encoder_file_path, 'rb') as read_file:
