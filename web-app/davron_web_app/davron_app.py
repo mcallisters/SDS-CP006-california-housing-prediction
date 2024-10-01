@@ -145,7 +145,7 @@ def get_season_posted():
 tab1, tab2 = st.tabs(["Main", "Credits"])
 
 with st.sidebar:
-    st.logo("GitHub 2.png", link='https://github.com/davron2004-tech/SDS-CP006-california-housing-prediction.git')
+    st.logo("web-app/davron_web_app/GitHub 2.png", link='https://github.com/davron2004-tech/SDS-CP006-california-housing-prediction.git')
     st.header('Specify the house details', divider=True)
 
     with st.container(border=True):
@@ -221,7 +221,7 @@ with st.sidebar:
 with tab1:
     st.title(':house: California Housing Price Prediction')
 
-    st.image("Thumbnail.png", width=400)
+    st.image("web-app/davron_web_app/Thumbnail.png", width=400)
     st.divider()
     @st.dialog('The predicted price of the house is: ')
     def show_price(price):
@@ -245,7 +245,7 @@ with tab2:
                 This is the #6 Collaborative Project of the [Super Data Science](https://www.superdatascience.com) community.
             """)
     with col2:
-        st.image('SDS logo 2.jpg', width=100)
+        st.image('web-app/davron_web_app/SDS logo 2.jpg', width=100)
     st.divider()
     st.subheader('Project leader:')
     st.write('🇺🇸 [Syed-Imtiaz Mir](https://www.linkedin.com/in/syed-imtiaz-mir/)')
