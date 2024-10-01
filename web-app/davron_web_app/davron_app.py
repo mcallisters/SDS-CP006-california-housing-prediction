@@ -5,11 +5,11 @@ import datetime
 model_file_path = 'davron_model'
 county_encoder_file_path = 'davron_county_encoder'
 
-with open(model_file_path, 'rb') as read_file:
-    model = pickle.load(read_file)
-
 with open(county_encoder_file_path, 'rb') as read_file:
     county_encoder = pickle.load(read_file)
+
+with open(model_file_path, 'rb') as read_file:
+    model = pickle.load(read_file)
 
 # Function to get house level
 level_three = 0
