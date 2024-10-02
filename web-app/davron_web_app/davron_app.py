@@ -1,6 +1,7 @@
 import streamlit as st
 import pickle
 import datetime
+import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 
@@ -236,7 +237,7 @@ with tab1:
             level_three, level_two, level_zero,
             age_group, area_group
         ]]
-        st.session_state.prediction_price = model.predict(user_input)
+        st.session_state.prediction_price = np.expm1(model.predict(user_input))
         show_price(st.session_state.prediction_price[0])
 with tab2:
     col1, col2 = st.columns(2)
@@ -254,7 +255,7 @@ with tab2:
     st.markdown('🇦🇪 [Shaheer Airaj Ahmed](https://www.linkedin.com/in/shaheerairaj/)')
     st.divider()
     st.subheader('Project members:')
-    st.markdown('🇸🇦 Mohammad M Zakarneh')
+    st.markdown('🇯🇴 [Mohammad M Zakarneh](https://www.linkedin.com/in/mohamed-zakarneh/)')
     st.markdown('🇺🇿 [Davron Abdukhakimov](https://www.linkedin.com/in/davron-abdukhakimov-90aab4264/)')
     st.markdown('🇦🇺 Soumya Tamhankar')
     st.markdown('🇺🇸 [Amos Anzele](https://www.linkedin.com/in/aanzele/)')
