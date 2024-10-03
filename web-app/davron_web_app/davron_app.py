@@ -2,7 +2,7 @@ import streamlit as st
 import pickle
 import datetime
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.preprocessing import LabelEncoder
 
 model_file_path = 'web-app/davron_web_app/davron_model'
