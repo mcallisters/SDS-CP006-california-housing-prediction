@@ -15,9 +15,9 @@ with open(model_file_path, 'rb') as read_file:
     model = pickle.load(read_file)
 
 # Function to get house level
-level_three = 0
-level_two = 0
 level_zero = 0
+level_two = 0
+level_three = 0
 
 # Season posted
 season_spring = 0
@@ -100,45 +100,38 @@ def get_home_type():
 
 
 def get_house_level():
-    global level_three, level_two, level_zero
     level = st.radio(st.session_state.house_level_label, ['Zero', 'One', 'Two', 'Three or more'], index=1)
     if level == 'Zero':
-        level_three = 0
-        level_two = 0
-        level_zero = 1
+        return 1, 0, 0
     elif level == 'One':
-        level_three = 0
-        level_two = 0
-        level_zero = 0
+        return 0, 0, 0
     elif level == 'Two':
-        level_three = 0
-        level_two = 1
-        level_zero = 0
+        return 0, 1, 0
     elif level == 'Three or more':
-        level_three = 1
-        level_two = 0
-        level_zero = 0
+        return 0, 0, 1
 
 
 def get_season_posted():
-    global season_winter, season_summer, season_spring
-    current_season = datetime.datetime.now().month
-    if current_season in [12, 1, 2]:
-        season_spring = 0
-        season_summer = 0
-        season_winter = 1
-    elif current_season in [3, 4, 5]:
-        season_spring = 1
-        season_summer = 0
-        season_winter = 0
-    elif current_season in [6, 7, 8]:
-        season_spring = 0
-        season_summer = 1
-        season_winter = 0
-    elif current_season in [9, 10, 11]:
-        season_spring = 0
-        season_summer = 0
-        season_winter = 0
+    current_month = datetime.datetime.now().month
+    season_index = 0
+    if current_month in [12, 1, 2]:
+        season_index = 0
+    elif current_month in [3, 4, 5]:
+        season_index = 1
+    elif current_month in [6, 7, 8]:
+        season_index = 2
+    elif current_month in [9, 10, 11]:
+        season_index = 3
+    season_posted = st.radio('In which season are you going to put the house up for sale?', ['Winter', 'Spring', 'Summer', 'Fall'],
+                             index=season_index)
+    if season_posted == 'Winter':
+        return 1, 0, 0
+    elif season_posted == 'Spring':
+        return 0, 1, 0
+    elif season_posted == 'Summer':
+        return 0, 0, 1
+    else:
+        return 0, 0, 0
 
 
 
@@ -161,7 +154,7 @@ with st.sidebar:
         # Home type
         get_home_type()
         # Display the home type and house level widgets
-        get_house_level()
+        level_zero, level_two, level_three = get_house_level()
         # Multi/split
         multi_split = yes_or_no_view('Is the type of the house multi/split?')
 
@@ -216,8 +209,9 @@ with st.sidebar:
         spa = yes_or_no_view('Is there a spa in the house?')
         # hasPetsAllowed
         has_pets_allowed = yes_or_no_view('Are the pets allowed in the house?')
+    with st.container(border=True):
+        season_winter, season_spring, season_summer = get_season_posted()
 
-    get_season_posted()
 
 with tab1:
     st.title(':house: California Housing Price Prediction')
