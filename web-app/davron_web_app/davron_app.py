@@ -221,8 +221,7 @@ with tab1:
     st.divider()
     @st.dialog('The predicted price of the house is: ')
     def show_price(price):
-        print(round(price, 2))
-        st.header(f"💰 ${round(price, 2)}")
+        st.header('💰 ${:.2f}'.format(price))
 
     if st.button(label='Predict Price',type='primary'):
         user_input = [[
