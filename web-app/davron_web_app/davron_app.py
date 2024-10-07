@@ -219,9 +219,9 @@ with tab1:
 
     st.image("web-app/davron_web_app/Thumbnail.png", width=400)
     st.divider()
-    @st.dialog('The predicted price of the house is: ')
+    @st.dialog('🏡 The predicted price of the house is: ')
     def show_price(price):
-        st.header('💰 ${:.2f}'.format(price))
+        st.header('💰 $ {:.2f}'.format(price))
 
     if st.button(label='Predict Price',type='primary'):
         user_input = [[
