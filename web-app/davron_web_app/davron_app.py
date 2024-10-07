@@ -239,7 +239,7 @@ with tab1:
        'season_posted_winter', 'level_three+', 'level_two', 'level_zero',
        'age_group', 'area_group']
         input_df = pd.DataFrame(user_input,columns=input_columns)
-        st.session_state.prediction_price = model.predict(user_input)
+        st.session_state.prediction_price = model.predict(input_df)
         show_price(st.session_state.prediction_price[0])
 with tab2:
     col1, col2 = st.columns(2)
