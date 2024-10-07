@@ -1,9 +1,10 @@
 import streamlit as st
 import pickle
 import datetime
+import pandas as pd
 import numpy as np
-from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.preprocessing import LabelEncoder
+from xgboost import XGBRegressor
 
 model_file_path = 'web-app/davron_web_app/davron_model'
 county_encoder_file_path = 'web-app/davron_web_app/davron_county_encoder'
@@ -223,15 +224,22 @@ with tab1:
         st.header(f"💰 ${round(price, 2)}")
 
     if st.button(label='Predict Price',type='primary'):
-        user_input = [[
+        user_input = [
             zipcode, bathrooms, bedrooms, is_parking, garage_spaces, pool, spa, is_new_construction,
             has_pets_allowed, county_int, multi_split,
             st.session_state.is_location_level, st.session_state.single_family, st.session_state.townhouse,
             season_spring, season_summer, season_winter,
             level_three, level_two, level_zero,
             age_group, area_group
-        ]]
-        st.session_state.prediction_price = np.expm1(model.predict(user_input))
+        ]
+        input_columns = ['zipcode', 'bathrooms', 'bedrooms', 'parking', 'garageSpaces',
+       'pool', 'spa', 'isNewConstruction', 'hasPetsAllowed', 'county',
+       'multi/split', 'is_location_level', 'homeType_SINGLE_FAMILY',
+       'homeType_TOWNHOUSE', 'season_posted_spring', 'season_posted_summer',
+       'season_posted_winter', 'level_three+', 'level_two', 'level_zero',
+       'age_group', 'area_group']
+        input_df = pd.DataFrame(user_input,columns=input_columns)
+        st.session_state.prediction_price = model.predict(user_input)
         show_price(st.session_state.prediction_price[0])
 with tab2:
     col1, col2 = st.columns(2)
