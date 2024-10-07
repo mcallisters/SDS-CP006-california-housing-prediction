@@ -1,4 +1,4 @@
-import streamlit as st
+=import streamlit as st
 import pickle
 import datetime
 import pandas as pd
@@ -221,17 +221,18 @@ with tab1:
     st.divider()
     @st.dialog('The predicted price of the house is: ')
     def show_price(price):
+        print(round(price, 2))
         st.header(f"💰 ${round(price, 2)}")
 
     if st.button(label='Predict Price',type='primary'):
-        user_input = [
+        user_input = [[
             zipcode, bathrooms, bedrooms, is_parking, garage_spaces, pool, spa, is_new_construction,
             has_pets_allowed, county_int, multi_split,
             st.session_state.is_location_level, st.session_state.single_family, st.session_state.townhouse,
             season_spring, season_summer, season_winter,
             level_three, level_two, level_zero,
             age_group, area_group
-        ]
+        ]]
         input_columns = ['zipcode', 'bathrooms', 'bedrooms', 'parking', 'garageSpaces',
        'pool', 'spa', 'isNewConstruction', 'hasPetsAllowed', 'county',
        'multi/split', 'is_location_level', 'homeType_SINGLE_FAMILY',
