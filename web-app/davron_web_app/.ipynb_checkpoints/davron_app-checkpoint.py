@@ -1,10 +1,8 @@
 import streamlit as st
 import pickle
 import datetime
-import pandas as pd
-import numpy as np
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
-from xgboost import XGBRegressor
 
 model_file_path = 'web-app/davron_web_app/davron_model'
 county_encoder_file_path = 'web-app/davron_web_app/davron_county_encoder'
@@ -16,9 +14,9 @@ with open(model_file_path, 'rb') as read_file:
     model = pickle.load(read_file)
 
 # Function to get house level
-level_zero = 0
-level_two = 0
 level_three = 0
+level_two = 0
+level_zero = 0
 
 # Season posted
 season_spring = 0
@@ -101,38 +99,45 @@ def get_home_type():
 
 
 def get_house_level():
+    global level_three, level_two, level_zero
     level = st.radio(st.session_state.house_level_label, ['Zero', 'One', 'Two', 'Three or more'], index=1)
     if level == 'Zero':
-        return 1, 0, 0
+        level_three = 0
+        level_two = 0
+        level_zero = 1
     elif level == 'One':
-        return 0, 0, 0
+        level_three = 0
+        level_two = 0
+        level_zero = 0
     elif level == 'Two':
-        return 0, 1, 0
+        level_three = 0
+        level_two = 1
+        level_zero = 0
     elif level == 'Three or more':
-        return 0, 0, 1
+        level_three = 1
+        level_two = 0
+        level_zero = 0
 
 
 def get_season_posted():
-    current_month = datetime.datetime.now().month
-    season_index = 0
-    if current_month in [12, 1, 2]:
-        season_index = 0
-    elif current_month in [3, 4, 5]:
-        season_index = 1
-    elif current_month in [6, 7, 8]:
-        season_index = 2
-    elif current_month in [9, 10, 11]:
-        season_index = 3
-    season_posted = st.radio('In which season are you going to put the house up for sale?', ['Winter', 'Spring', 'Summer', 'Fall'],
-                             index=season_index)
-    if season_posted == 'Winter':
-        return 1, 0, 0
-    elif season_posted == 'Spring':
-        return 0, 1, 0
-    elif season_posted == 'Summer':
-        return 0, 0, 1
-    else:
-        return 0, 0, 0
+    global season_winter, season_summer, season_spring
+    current_season = datetime.datetime.now().month
+    if current_season in [12, 1, 2]:
+        season_spring = 0
+        season_summer = 0
+        season_winter = 1
+    elif current_season in [3, 4, 5]:
+        season_spring = 1
+        season_summer = 0
+        season_winter = 0
+    elif current_season in [6, 7, 8]:
+        season_spring = 0
+        season_summer = 1
+        season_winter = 0
+    elif current_season in [9, 10, 11]:
+        season_spring = 0
+        season_summer = 0
+        season_winter = 0
 
 
 
@@ -155,7 +160,7 @@ with st.sidebar:
         # Home type
         get_home_type()
         # Display the home type and house level widgets
-        level_zero, level_two, level_three = get_house_level()
+        get_house_level()
         # Multi/split
         multi_split = yes_or_no_view('Is the type of the house multi/split?')
 
@@ -210,18 +215,17 @@ with st.sidebar:
         spa = yes_or_no_view('Is there a spa in the house?')
         # hasPetsAllowed
         has_pets_allowed = yes_or_no_view('Are the pets allowed in the house?')
-    with st.container(border=True):
-        season_winter, season_spring, season_summer = get_season_posted()
 
+    get_season_posted()
 
 with tab1:
     st.title(':house: California Housing Price Prediction')
 
     st.image("web-app/davron_web_app/Thumbnail.png", width=400)
     st.divider()
-    @st.dialog('🏡 The predicted price of the house is: ')
+    @st.dialog('The predicted price of the house is: ')
     def show_price(price):
-        st.header('💰 $ {:.2f}'.format(price))
+        st.header(f"💰 ${round(price, 2)}")
 
     if st.button(label='Predict Price',type='primary'):
         user_input = [[
@@ -232,14 +236,7 @@ with tab1:
             level_three, level_two, level_zero,
             age_group, area_group
         ]]
-        input_columns = ['zipcode', 'bathrooms', 'bedrooms', 'parking', 'garageSpaces',
-       'pool', 'spa', 'isNewConstruction', 'hasPetsAllowed', 'county',
-       'multi/split', 'is_location_level', 'homeType_SINGLE_FAMILY',
-       'homeType_TOWNHOUSE', 'season_posted_spring', 'season_posted_summer',
-       'season_posted_winter', 'level_three+', 'level_two', 'level_zero',
-       'age_group', 'area_group']
-        input_df = pd.DataFrame(user_input,columns=input_columns)
-        st.session_state.prediction_price = model.predict(input_df)
+        st.session_state.prediction_price = model.predict(user_input)
         show_price(st.session_state.prediction_price[0])
 with tab2:
     col1, col2 = st.columns(2)
@@ -257,7 +254,7 @@ with tab2:
     st.markdown('🇦🇪 [Shaheer Airaj Ahmed](https://www.linkedin.com/in/shaheerairaj/)')
     st.divider()
     st.subheader('Project members:')
-    st.markdown('🇯🇴 [Mohammad M Zakarneh](https://www.linkedin.com/in/mohamed-zakarneh/)')
+    st.markdown('🇸🇦 Mohammad M Zakarneh')
     st.markdown('🇺🇿 [Davron Abdukhakimov](https://www.linkedin.com/in/davron-abdukhakimov-90aab4264/)')
     st.markdown('🇦🇺 Soumya Tamhankar')
     st.markdown('🇺🇸 [Amos Anzele](https://www.linkedin.com/in/aanzele/)')
