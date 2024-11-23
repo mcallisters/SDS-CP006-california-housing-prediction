@@ -259,7 +259,5 @@ with tab2:
     st.subheader('Project members:')
     st.markdown('🇯🇴 [Mohammad M Zakarneh](https://www.linkedin.com/in/mohamed-zakarneh/)')
     st.markdown('🇺🇿 [Davron Abdukhakimov](https://www.linkedin.com/in/davron-abdukhakimov-90aab4264/)')
-    st.markdown('🇦🇺 Soumya Tamhankar')
-    st.markdown('🇺🇸 [Amos Anzele](https://www.linkedin.com/in/aanzele/)')
 
 
